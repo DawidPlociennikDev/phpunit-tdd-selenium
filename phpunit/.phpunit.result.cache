@@ -1,0 +1,1 @@
+{"version":1,"defects":{"ErrorsExceptionsTest::testErrorCanBeExpected":5,"ErrorsExceptionsTest::testException":5},"times":{"ErrorsExceptionsTest::testErrorCanBeExpected":0.005,"ErrorsExceptionsTest::testException":0.001}}
