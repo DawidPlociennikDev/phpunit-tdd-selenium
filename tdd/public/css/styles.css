@@ -1,3 +1,6 @@
+.menu {
+  align-items: center;
+}
 
 .foundation-5-top-bar {
   background: #333;
@@ -20,15 +23,14 @@
   border-color: transparent transparent transparent #fefefe;
 }
 
-.foundation-5-top-bar .js-drilldown-back > a::before {
+.foundation-5-top-bar .js-drilldown-back>a::before {
   border-color: transparent #fefefe transparent transparent;
 }
 
-.foundation-5-top-bar .is-drilldown-submenu-parent > a::after {
+.foundation-5-top-bar .is-drilldown-submenu-parent>a::after {
   border-color: transparent transparent transparent #fefefe;
 }
 
-.foundation-5-top-bar .dropdown.menu.medium-horizontal > li.is-dropdown-submenu-parent > a::after {
+.foundation-5-top-bar .dropdown.menu.medium-horizontal>li.is-dropdown-submenu-parent>a::after {
   border-color: #fefefe transparent transparent;
 }
-
