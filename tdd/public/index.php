@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require '../vendor/autoload.php';
 $config = require '../app/config.php';
 $app = new \Slim\App(['settings' => $config]);

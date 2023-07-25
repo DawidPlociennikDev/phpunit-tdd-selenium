@@ -29,19 +29,6 @@ class FrontendStuffTest extends Selenium2TestCase
         $this->assertTrue(true);
     }
 
-    public function testCanSeeCorrectMessageAfterDeletingCategory()
-    {
-        $this->url('show-category/1');
-        $this->clickOnElement('delete-category-confirmation');
-        $this->waitUntil(function () {
-            if ($this->alertIsPresent()) return true;
-            return null;
-        }, 4000);
-        $this->acceptAlert();
-        $this->assertContains('Category was deleted', $this->source());
-        $this->markTestIncomplete('Message about deleted category should apear after redirection');
-    }
-
     public function testCanSeeEditAndDeleteLinksAndCategoryName()
     {
         $this->url('');
@@ -53,8 +40,7 @@ class FrontendStuffTest extends Selenium2TestCase
         $editLink = $this->byLinkText('Edit');
         $href = $editLink->attribute('href');
         $this->assertContains('edit-category/1', $href);
-
-        $this->markTestIncomplete('Category name, description, edit, delete link must be dynamics');
+        $this->assertContains('Description of Electronics', $this->source());
     }
 
     public function testCanSeeEditCategoryMessage()
@@ -63,8 +49,6 @@ class FrontendStuffTest extends Selenium2TestCase
         $editLink = $this->byLinkText('Edit');
         $editLink->click();
         $this->$this->assertContains('Edit category', $this->source());
-
-        $this->markTestIncomplete('Make input values dynamic');
     }
 
     public function testCanSeeFormValidation() 
@@ -76,21 +60,20 @@ class FrontendStuffTest extends Selenium2TestCase
 
         $this->back();
         $categoryName = $this->byName('category_name');
-        $categoryName->value('Name');
+        $categoryName->value('RTV');
         $categoryDescription = $this->byName('category_description');
-        $categoryDescription->value('Description');
+        $categoryDescription->value('Description of RTV');
         $button = $this->byCssSelector('input[type="submit"]');
         $button->submit();
 
         $this->$this->assertContains('Category was saved', $this->source());
-        $this->markTestIncomplete('More jobs with html form needed');
     }
 
     public function testCanSeeNestedCategories()
     {
         $this->url('');
         $categories = $this->elements($this->using('css selector')->value('ul.dropdown li'));
-        $this->assertEquals(18, count($categories));
+        $this->assertEquals(20, count($categories));
 
         $elem1 = $this->byCssSelector('ul.dropdown > li:nth-child(2) > a');
         $this->assertEquals('Electronics', $elem1->text());
@@ -110,5 +93,25 @@ class FrontendStuffTest extends Selenium2TestCase
         $elem5 = $this->byXPath('//ul[@class="dropdown menu"]/li[2]//ul[1]//ul[1]//ul[1]//ul[1]/li[1]/a');
         $href = $elem5->attribute('href');
         $this->assertRegExp('@^http://localhost:8000/show-category/[0-9]+,FullHD@', $href);
+    }
+
+    public function testCanSeeCorrectMessageAfterDeletingCategory()
+    {
+        $this->url('show-category/1');
+        $this->clickOnElement('delete-category-confirmation');
+        $this->waitUntil(function () {
+            if ($this->alertIsPresent()) return true;
+            return null;
+        }, 4000);
+        $this->acceptAlert();
+        $this->assertContains('Category was deleted', $this->source());
+        $this->url('');
+        $this->assertRegExp('@Computers</a>@', $this->source());
+    }
+
+    public function testCanSeeSelectOptionList()
+    {
+        $this->url('');
+        $this->assertContains('&nbsp;&nbsp;&nbsp;&nbsp;Linux', $this->source());
     }
 }

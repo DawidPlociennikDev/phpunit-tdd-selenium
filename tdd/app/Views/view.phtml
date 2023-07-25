@@ -10,78 +10,66 @@
           Add a new category
         <?php endif; ?>
       </h3>
+      <?php if ($_SESSION['category_deleted'] ?? false) : ?>
+        <div class="callout alert">
+          Category was deleted
+        </div>
+      <?php unset($_SESSION['category_deleted']); endif; ?>
       <?php if (isset($categorySaved) && $categorySaved == false) : ?>
         <div class="callout alert">
           Fill correctly the form
         </div>
-      <?php else : ?>
+      <?php elseif (isset($categorySaved) && $categorySaved == true) : ?>
         <div class="callout success">
           Category was saved
         </div>
       <?php endif; ?>
-      <?php if ($category_deleted ?? false) : ?>
-        <div class="callout alert">
-          Category was deleted
-        </div>
-      <?php endif; ?>
-      <form action="<?= $baseUrl; ?>save-category" method="POST">
+      <form action="<?= $baseUrl ?>save-category" method="POST">
         <label>Name
-          <input type="text" placeholder="Name" name="category_name" value="<?= $editedCategory['name'] ?? null ?>" />
+          <input type="text" name="category_name" placeholder="Name" value="<?= $editedCategory['name'] ?? null ?>" />
         </label>
         <label>Description
-          <textarea placeholder="Description" name="category_description"></textarea>
+          <textarea name="category_description" placeholder="Description"><?= $editedCategory['description'] ?? null ?></textarea>
         </label>
         <label>Parent category
-          <select name="category_parent">
-            <option>--choose--</option>
-            <option value="">Electronics</option>
-            <option value="">&nbsp;&nbsp;Monitors</option>
-            <option value="">&nbsp;&nbsp;Tablets</option>
-            <option value="">&nbsp;&nbsp;Computers</option>
-            <option value="">&nbsp;&nbsp;&nbsp;&nbsp;Desktops</option>
-            <option value="">&nbsp;&nbsp;&nbsp;&nbsp;Notebooks</option>
-            <option value="">&nbsp;&nbsp;&nbsp;&nbsp;Laptops</option>
-            <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Asus</option>
-            <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dell</option>
-            <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Acer</option>
-            <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FullHD</option>
-            <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HD+</option>
-            <option value="">Videos</option>
-            <option value="">Software</option>
-            <option value="">&nbsp;&nbsp;Operating systems</option>
-            <option value="">&nbsp;&nbsp;&nbsp;&nbsp;Linux</option>
-            <option value="">&nbsp;&nbsp;Servers</option>
+          <select id="select_category_list" name="category_parent">
+            <option value="<?= null; ?>">--choose--</option>
+            <?php foreach ($select_list_categories as $category_for_select) : ?>
+              <?php if (isset($editedCategory) && $editedCategory->parent_id == $category_for_select['id']) : ?>
+                <option selected value="<?= $category_for_select['id'] ?>"><?= $category_for_select['name'] ?></option>
+              <?php else : ?>
+                <option value="<?= $category_for_select['id'] ?>"><?= $category_for_select['name'] ?></option>
+              <?php endif; ?>
+            <?php endforeach; ?>
           </select>
         </label>
         <input type="submit" class="button expanded" value="Save category" />
+        <?php if (isset($editedCategory)) : ?>
+          <input type="hidden" name="category_id" value="<?= $editedCategory->id; ?>">
+        <?php endif; ?>
       </form>
     </div>
 
     <div class="medium-6 large-5 cell large-offset-1">
       <div class="basic-card">
-        <?php if ($category ?? false) : ?>
-          <div class="basic-card-content content callout secondary">
-            <h5><?= $category['name'] ?? 'Choose a category from the menu' ?></h5>
+        <div class="basic-card-content content callout secondary">
+          <h5><?= $category->name ?? 'Choose a category from the menu' ?></h5>
+          <?php if ($category->description ?? false) : ?>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi
-              saepe, asperiores dolor nesciunt dolore, accusamus minus
-              repellendus vero odio, quibusdam, ipsum nisi in a molestiae ex
-              assumenda nulla eveniet eos!
+              <?= $category->description ?>
             </p>
-          </div>
+          <?php endif; ?>
+        </div>
+        <?php if ($category ?? false) : ?>
           <div class="links callout primary">
             <ul class="menu">
               <li>
-                <a href="<?= $baseUrl ?>edit-category/1">Edit</a>
+                <a href="<?= $baseUrl ?>edit-category/<?= $category->id ?>">Edit</a>
               </li>
               <li>
-                <a id="delete-category-confirmation" onclick="return confirm('Are you sure?')" href="<?= $baseUrl ?>delete-category/1">Delete</a>
+                <a id="delete-category-confirmation" onclick="return confirm('Are you sure?')" href="<?= $baseUrl ?>delete-category/<?= $category->id ?>">Delete</a>
               </li>
             </ul>
-          </div>
-        <?php else : ?>
-          <div class="basic-card-content content callout secondary">
-            <h5><?= $category ?? 'Choose a category from the menu' ?></h5>
           </div>
         <?php endif; ?>
       </div>

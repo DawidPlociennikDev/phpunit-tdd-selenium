@@ -21,6 +21,7 @@ class CategoriesFactoryTest extends TestCase
         ]);
         $capsule->setAsGlobal();
         $capsule->bootEloquent();
-        $this->assertTrue(is_string(CategoriesFactory::create()));
+        $this->assertTrue(is_string(CategoriesFactory::create()['menu_categories']));
+        $this->assertTrue(is_string(CategoriesFactory::create()['select_list_categories']));
     }
 }
