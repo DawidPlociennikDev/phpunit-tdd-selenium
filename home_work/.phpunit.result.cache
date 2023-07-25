@@ -1,0 +1,1 @@
+{"version":1,"defects":{"FunctionalTest::testResponse":2,"IntegrationTest::testIntegration":2,"UnitTest::testGreetings":2},"times":{"FunctionalTest::testResponse":0.01,"IntegrationTest::testIntegration":0.001,"UnitTest::testGreetings":0.001}}
